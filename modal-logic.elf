@@ -38,23 +38,23 @@ local/inl  : local ([x] inl (M x))
               <- local M.
 local/inr  : local ([x] inr (M x))
               <- local M.
-local/lam  : local ([x] lam ([y] M y x))
-              <- ({x} local (M x)).
+local/lam  : local ([x] lam ([y] M x y))
+              <- ({y} local ([x] M x y)).
 local/circ : local ([x] circ (N x))
               <- local N.
-local/let/and  : local ([x] let/and (A x) ([a][b] F a b x))
+local/let/and  : local ([x] let/and (A x) ([a][b] F x a b))
                   <- local A
-                  <- ({x}{y} local (F x y)).
-local/let/or   : local ([x] let/or (A x) ([a] F a x) ([b] G b x))
+                  <- ({a}{b} local ([x] F x a b)).
+local/let/or   : local ([x] let/or (A x) ([a] F x a) ([b] G x b))
                   <- local A
-                  <- ({x} local (F x))
-                  <- ({x} local (G x)).
-local/let/box  : local ([x] let/box (A x) ([a] F a x))
+                  <- ({a} local ([x] F x a))
+                  <- ({b} local ([x] G x b)).
+local/let/box  : local ([x] let/box (A x) ([a] F x a))
                   <- local A
-                  <- ({x} local (F x)).
-local/let/circ : local ([x] let/circ (A x) ([a] F a x))
+                  <- ({a} local ([x] F x a)).
+local/let/circ : local ([x] let/circ (A x) ([a] F x a))
                   <- local A
-                  <- ({x} local (F x)).
+                  <- ({a} local ([x] F x a)).
 local/app : local ([x] app (F x) (A x))
              <- local F
              <- local A.
@@ -75,7 +75,7 @@ of/let/and : of (let/and P F) C
               <- ({x}{y} of x A -> of x B -> of (F x y) C)
               <- ({x} local (F x))
               <- ({y} local ([x] F x y)).
-of/let/and : of (let/or O Inl Inr) C
+of/let/or  : of (let/or O Inl Inr) C
               <- of O (A ∨ B)
               <- ({x} of x A -> of (Inl x) C)
               <- ({y} of y B -> of (Inr y) C)
