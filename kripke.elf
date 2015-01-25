@@ -1,18 +1,9 @@
-%{Kripke semantics are based around notions of ordered worlds. Since
-  we only care about circle and box we have 3 worlds, forming a nice
-  ordered chain. In theory we could leave the exact points in the
-  world unspecified and just deal with them later but this turns into
-  unnecessary pain because of limitations with Twelf.}%
+%{Kripke semantics are based around notions of ordered worlds}%
 world : type.
-zero  : world.
-one   : world.
-two   : world.
 
 ≤      : world -> world -> type. %infix right 5 ≤.
 ≤/refl : A ≤ A.
 ≤/tran : A ≤ B -> B ≤ C -> A ≤ C.
-≤/zero : zero ≤ one.
-≤/one  : one ≤ two.
 
 ⊢ : world -> prop -> type. %infix right 3 ⊢.
 ⊢/⊤  : U ⊢ ⊤.
