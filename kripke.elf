@@ -25,8 +25,8 @@ two   : world.
         <- U ⊢ A.
 ⊢/∨2 : U ⊢ A ∨ B
         <- U ⊢ B.
-⊢/m  : U ⊢ A      %{Then it's true in the weaker universe}%
-        <- W ⊢ A  %{And W forces A}%
-        <- U ≤ W. %{If U is weaker than W}%
 ⊢/□  : U ⊢ □ A
         <- ({w} U ≤ w -> w ⊢ A).
+⊢/◯  : U ⊢ ◯ A
+        <- W ⊢ A
+        <- U ≤ W.
