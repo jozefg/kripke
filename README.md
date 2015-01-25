@@ -3,7 +3,7 @@ A formalization of Kripke semantics in Twelf. This code is split into
 
  - kripke.elf
    The formulation of Kripke semantics over the preorder that we need
-   for box and circle.
+   for box and diamond.
  - modal-logic.elf
    The normal formulation of modal logic.
  - equivalent.elf

@@ -18,6 +18,6 @@ world : type.
         <- U ⊢ B.
 ⊢/□  : U ⊢ □ A
         <- ({w} U ≤ w -> w ⊢ A).
-⊢/◯  : U ⊢ ◯ A
+⊢/◇  : U ⊢ ◇ A
         <- W ⊢ A
         <- U ≤ W.

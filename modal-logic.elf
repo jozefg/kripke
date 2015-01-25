@@ -1,12 +1,12 @@
-%{A normal construction of modal logic with ◯ and □}%
+%{A normal construction of modal logic with ◇ and □}%
 
 prop : type.
 ∧    : prop -> prop -> prop. %infix right 5 ∧.
 ∨    : prop -> prop -> prop. %infix right 5 ∨.
-⇒   : prop -> prop -> prop. %infix right 5 ⇒.
+⇒    : prop -> prop -> prop. %infix right 5 ⇒.
 ⊤    : prop.
 ⊥    : prop.
-◯   : prop -> prop.
+◇    : prop -> prop.
 □    : prop -> prop.
 
 term : type.
@@ -15,13 +15,13 @@ inl  : term -> term.
 inr  : term -> term.
 lam  : (term -> term) -> term.
 tt   : term.
-circ : term -> term.
+dia  : term -> term.
 box  : term -> term.
 
 let/and  : term -> (term -> term -> term) -> term.
 let/or   : term -> (term -> term) -> (term -> term) -> term.
 let/box  : term -> (term -> term) -> term.
-let/circ : term -> (term -> term) -> term.
+let/dia  : term -> (term -> term) -> term.
 
 app : term -> term -> term.
 absurd : term -> term.
@@ -40,7 +40,7 @@ local/inr  : local ([x] inr (M x))
               <- local M.
 local/lam  : local ([x] lam ([y] M x y))
               <- ({y} local ([x] M x y)).
-local/circ : local ([x] circ (N x))
+local/dia : local ([x] dia (N x))
               <- local N.
 local/let/and  : local ([x] let/and (A x) ([a][b] F x a b))
                   <- local A
@@ -52,7 +52,7 @@ local/let/or   : local ([x] let/or (A x) ([a] F x a) ([b] G x b))
 local/let/box  : local ([x] let/box (A x) ([a] F x a))
                   <- local A
                   <- ({a} local ([x] F x a)).
-local/let/circ : local ([x] let/circ (A x) ([a] F x a))
+local/let/dia : local ([x] let/dia (A x) ([a] F x a))
                   <- local A
                   <- ({a} local ([x] F x a)).
 local/app : local ([x] app (F x) (A x))
@@ -68,7 +68,7 @@ of/inl : of B TB -> of (inl A) (TA ∨ TB).
 of/lam : of (lam F) (TA ⇒ TB)
           <- ({x} of x A -> of (F x) B).
 of/tt  : of tt ⊤.
-of/circ : of A TA -> of (circ A) (◯ TA).
+of/dia : of A TA -> of (dia A) (◇ TA).
 of/box  : of A TA -> of (box A) (□ TA).
 of/let/and : of (let/and P F) C
               <- of P (A ∧ B)
@@ -84,9 +84,9 @@ of/let/or  : of (let/or O Inl Inr) C
 of/let/box : of (let/box N F) B
               <- of N (□ A)
               <- ({x} of x A -> of (F x) B).
-of/let/circ : of (let/circ N F) (◯ B)
-               <- of N (◯ A)
-               <- ({x} of x A -> of (F x) (◯ B)).
+of/let/dia : of (let/dia N F) (◇ B)
+               <- of N (◇ A)
+               <- ({x} of x A -> of (F x) (◇ B)).
 of/app : of (app F A) TB
           <- of F (TA ⇒ TB)
           <- of A TA.
