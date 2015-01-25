@@ -13,3 +13,20 @@ two   : world.
 ≤/tran : A ≤ B -> B ≤ C -> A ≤ C.
 ≤/zero : zero ≤ one.
 ≤/one  : one ≤ two.
+
+⊢ : world -> prop -> type. %infix right 3 ⊢.
+⊢/⊤  : U ⊢ ⊤.
+⊢/⇒  : U ⊢ (A ⇒ B)
+        <- (U ⊢ A -> U ⊢ B).
+⊢/∧  : U ⊢ A ∧ B
+        <- U ⊢ B
+        <- U ⊢ A.
+⊢/∨1 : U ⊢ A ∨ B
+        <- U ⊢ A.
+⊢/∨2 : U ⊢ A ∨ B
+        <- U ⊢ B.
+⊢/m  : U ⊢ A      %{Then it's true in the weaker universe}%
+        <- W ⊢ A  %{And W forces A}%
+        <- U ≤ W. %{If U is weaker than W}%
+⊢/□  : U ⊢ □ A
+        <- ({w} U ≤ w -> w ⊢ A).
