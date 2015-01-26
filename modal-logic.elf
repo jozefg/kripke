@@ -29,37 +29,42 @@ absurd : term -> term.
 %{We need to ensure that a box contains no free terms in order to form
   a box.}%
 
-local : (term -> term) -> type.
-local/none : local ([x] M).
-local/and  : local ([x] and (M x) (N x))
-              <- local N
-              <- local M.
-local/inl  : local ([x] inl (M x))
-              <- local M.
-local/inr  : local ([x] inr (M x))
-              <- local M.
-local/lam  : local ([x] lam ([y] M x y))
-              <- ({y} local ([x] M x y)).
-local/dia : local ([x] dia (N x))
-              <- local N.
-local/let/and  : local ([x] let/and (A x) ([a][b] F x a b))
-                  <- local A
-                  <- ({a}{b} local ([x] F x a b)).
-local/let/or   : local ([x] let/or (A x) ([a] F x a) ([b] G x b))
-                  <- local A
-                  <- ({a} local ([x] F x a))
-                  <- ({b} local ([x] G x b)).
-local/let/box  : local ([x] let/box (A x) ([a] F x a))
-                  <- local A
-                  <- ({a} local ([x] F x a)).
-local/let/dia : local ([x] let/dia (A x) ([a] F x a))
-                  <- local A
-                  <- ({a} local ([x] F x a)).
-local/app : local ([x] app (F x) (A x))
-             <- local F
-             <- local A.
-local/absurd : local ([x] absurd (N x))
-              <- local N.
+%{Awful terribleness}%
+location   : type.
+our-world  : location.
+some-world : location.
+
+local : location -> (term -> term) -> type.
+local/none : local L ([x] M).
+local/and  : local L ([x] and (M x) (N x))
+              <- local L N
+              <- local L M.
+local/inl  : local L ([x] inl (M x))
+              <- local L M.
+local/inr  : local L ([x] inr (M x))
+              <- local L M.
+local/lam  : local L ([x] lam ([y] M x y))
+              <- ({y} local L ([x] M x y)).
+local/dia  : local our-world ([x] dia (M x))
+              <- local our-world M.
+local/let/and  : local L ([x] let/and (A x) ([a][b] F x a b))
+                  <- local L A
+                  <- ({a}{b} local L ([x] F x a b)).
+local/let/or   : local L ([x] let/or (A x) ([a] F x a) ([b] G x b))
+                  <- local L A
+                  <- ({a} local L ([x] F x a))
+                  <- ({b} local L ([x] G x b)).
+local/let/box  : local L ([x] let/box (A x) ([a] F x a))
+                  <- local L A
+                  <- ({a} local L ([x] F x a)).
+local/let/dia : local L ([x] let/dia (A x) ([a] F x a))
+                  <- local L A
+                  <- ({a} local some-world ([x] F x a)).
+local/app : local L ([x] app (F x) (A x))
+             <- local L F
+             <- local L A.
+local/absurd : local L ([x] absurd (N x))
+              <- local L N.
 
 of : term -> prop -> type.
 of/and : of A TA -> of B TB -> of (and A B) (TA ∧ TB).
@@ -73,20 +78,21 @@ of/box  : of A TA -> of (box A) (□ TA).
 of/let/and : of (let/and P F) C
               <- of P (A ∧ B)
               <- ({x}{y} of x A -> of x B -> of (F x y) C)
-              <- ({x} local (F x))
-              <- ({y} local ([x] F x y)).
+              <- ({x} local our-world (F x))
+              <- ({y} local our-world ([x] F x y)).
 of/let/or  : of (let/or O Inl Inr) C
               <- of O (A ∨ B)
               <- ({x} of x A -> of (Inl x) C)
               <- ({y} of y B -> of (Inr y) C)
-              <- local Inl
-              <- local Inr.
+              <- local our-world Inl
+              <- local our-world Inr.
 of/let/box : of (let/box N F) B
               <- of N (□ A)
               <- ({x} of x A -> of (F x) B).
 of/let/dia : of (let/dia N F) (◇ B)
-               <- of N (◇ A)
-               <- ({x} of x A -> of (F x) (◇ B)).
+              <- of N (◇ A)
+              <- local our-world F
+              <- ({x} of x A -> of (F x) (◇ B)).
 of/app : of (app F A) TB
           <- of F (TA ⇒ TB)
           <- of A TA.
