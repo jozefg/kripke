@@ -1,0 +1,10 @@
+%{This whole file boils down to two proofs, that if U ⊢ p then of E P
+  and vice versa.}%
+
+sound : {u} of E T -> u ⊢ T -> type.
+%mode sound +U +T -S.
+
+- : sound U of/tt ⊢/⊤.
+
+complete : U ⊢ T -> of E T -> type.
+%mode complete +S -T.
